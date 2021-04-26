@@ -12,8 +12,6 @@ mongoose.connect(process.env.DB, {
     console.log("DB CONNECTED")
 });
 
-
-
 const port = 8000;
 
 
