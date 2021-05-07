@@ -7,7 +7,7 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 // const { cookie } = require("express-validor");
-const authRoutes = require("./routes/authentication");
+const authRoutes = require("./routes/authentication.js");
 
 //DB CONNECT
 mongoose.connect(process.env.DB, {
