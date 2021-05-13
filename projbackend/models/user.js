@@ -10,22 +10,22 @@ var userSchema = new mongoose.Schema({
         trim: true  
     },
     lastname: {
-        type: string,
+        type: String,
         maxlength: 32,
         trim: true
     },
     email:{ 
-        type: string,
+        type: String,
         trim: true,
         required: true,
         unique: true
 
     },
     encry_password: {
-        type: string,
+        type: String,
         required: true
     },
-    salt = String,
+    salt: String,
     role: {
         type: Number,
         default: 0
@@ -38,7 +38,7 @@ var userSchema = new mongoose.Schema({
 );
 
 
-userSchema.virtual()    
+userSchema.virtual("password")    
     .set(function(password){
         this._password = password   
         this.salt = uuidv1();
@@ -50,10 +50,10 @@ userSchema.virtual()
     })
 
 
-userSchema.methods = {
+userSchema.method = {
 
     authenticate: function(plainpassword){
-        return this.securePassword === this.encry_password
+        return this.securePassword(plainpassword) === this.encry_password
     },
 
 
@@ -67,7 +67,7 @@ userSchema.methods = {
             .digest("hex");
 
         }
-        catch (err){
+        catch (error){
             return"";
         }
         
@@ -76,4 +76,4 @@ userSchema.methods = {
 
 
 
-module.exports = mongoose.model("User","userSchema")
+module.exports = mongoose.model("User",userSchema);
