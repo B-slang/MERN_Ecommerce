@@ -1,7 +1,5 @@
 const User = require("../models/user")
 
-
-
 exports.signup = (req, res) =>{
     const user = new User(req.body)
     user.save((error, user)=>{
@@ -10,7 +8,11 @@ exports.signup = (req, res) =>{
                 error: "Not able to save" 
             });
         }
-        res.json(User);
+        res.json({
+            name : user.name,
+            email : user.email,
+            id : user._id
+        });
     } )
 };
 
