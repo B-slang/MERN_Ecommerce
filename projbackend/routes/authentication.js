@@ -1,9 +1,23 @@
-var express = require('express')
-var router = express.Router()
+var express = require("express");
+var router = express.Router();
+const { check } = require("express-validator");
 
-const {signout, signup} = require("../controllers/authentication")
+const { signout, signup } = require("../controllers/authentication");
 
-router.post("/signup", signup);
+//simple validation
+router.post(
+  "/signup",
+  [
+    check("name")
+      .isLength({ min: 3 })
+      .withMessage("must be atleast 3 char long"),
+    check("email").isEmail().withMessage("correct @ email is required"),
+    check("password")
+      .isLength({ min: 5 })
+      .withMessage("password should be atleast 5 char long"),
+  ],
+  signup
+);
 
 router.get("/signout", signout);
 
