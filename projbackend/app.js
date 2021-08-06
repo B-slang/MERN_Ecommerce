@@ -28,7 +28,7 @@ app.use(cors());
 app.use("/api", authRoutes);
 
 // PORT
-const port = 8000;
+const port = 4000;
 
 // STARTING A SERVER
 app.listen(port, () => {
