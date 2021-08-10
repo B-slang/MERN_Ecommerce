@@ -1,6 +1,6 @@
 const User = require("../models/user");
-const jwt = require('jsonwebtoken')
-const expressJwt  = require('express-jwt')
+const jwt = require("jsonwebtoken");
+const expressJwt = require("express-jwt");
 const { validationResult } = require("express-validator");
 
 exports.signup = (req, res) => {
@@ -27,28 +27,27 @@ exports.signup = (req, res) => {
   });
 };
 
-
-//for signin route(checking the user exits or not) 
+//for signin route(checking the user exits or not)
 exports.signin = (req, res) => {
   const errors = validationResult(req);
   const { email, password } = req.body;
 
   if (!errors.isEmpty()) {
     return res.status(422).json({
-      error: errors.array()[0].msg
+      error: errors.array()[0].msg,
     });
   }
 
   User.findOne({ email }, (err, user) => {
     if (err || !user) {
       return res.status(400).json({
-        error: "USER email does not exists"
+        error: "USER email does not exists",
       });
     }
 
     if (!user.autheticate(password)) {
       return res.status(401).json({
-        error: "Email and password do not match"
+        error: "Email and password do not match",
       });
     }
 
@@ -63,9 +62,39 @@ exports.signin = (req, res) => {
   });
 };
 
-
 exports.signout = (req, res) => {
+  res.clearCookie("token");
   res.json({
     message: "user signout",
   });
+};
+
+// protected routes
+exports.isSignedIn = expressJwt({
+  secret: process.env.SECRET,
+  userProperty: "auth",
+});
+
+// custom middlewares
+
+//user authentication
+exports.isAuthenticated = (req, res, next) => {
+  let checker = req.profile && req.auth && req.profile._id === req.auth_.id;
+  if (!checker) {
+    return res.status(403).json({
+      error: "access denied",
+    });
+  }
+  next();
+};
+
+//admin auth
+
+exports.isAdmin = (req, res, next) => {
+  if (req.profile.role === 0) {
+    return res.status(403).json({
+      error: "you are not admin",
+    });
+  }
+  next();
 };
