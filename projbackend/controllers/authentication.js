@@ -69,31 +69,31 @@ exports.signout = (req, res) => {
   });
 };
 
-// protected routes
-exports.isSignedIn = expressJwt({
-  secret: process.env.SECRET,
-  userProperty: "auth",
-});
-
 // custom middlewares
 
-//user authentication
+//protected routes
+exports.isSignedIn = expressJwt({
+  secret: process.env.SECRET,
+  userProperty: "auth"
+});
+
+//custom middlewares
+
+//user authenticatION
 exports.isAuthenticated = (req, res, next) => {
-  let checker = req.profile && req.auth && req.profile._id === req.auth_.id;
+  let checker = req.profile && req.auth && req.profile._id == req.auth._id;
   if (!checker) {
     return res.status(403).json({
-      error: "access denied",
+      error: "ACCESS DENIED"
     });
   }
   next();
 };
 
-//admin auth
-
 exports.isAdmin = (req, res, next) => {
   if (req.profile.role === 0) {
     return res.status(403).json({
-      error: "you are not admin",
+      error: "You are not ADMIN, Access denied"
     });
   }
   next();
