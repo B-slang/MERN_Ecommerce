@@ -1,4 +1,4 @@
-const category = require("../models/category");
+const Category = require("../models/category");
 
 exports.getCategoryById = (req, res, next, id) => {
   Category.findById(id).exec((err, cate) => {
@@ -20,7 +20,7 @@ exports.createCategory = (req, res) => {
         error: "Unable to save in db",
       });
     }
-    res.json({ category });
+    res.json({category} );
   });
 };
 
