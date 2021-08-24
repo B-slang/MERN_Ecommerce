@@ -35,6 +35,7 @@ app.use(cookieParser());
 app.use(cors());
 
 //My ROUTES
+app.use(express.json())
 app.use("/api", authRoutes);
 app.use("/api", userRoutes);
 app.use("/api", categoryRoutes);
