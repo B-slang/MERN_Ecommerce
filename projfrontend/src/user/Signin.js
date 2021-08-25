@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Base from "../core/Base";
-import { Link, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 
 import { signin, authenticate, isAutheticated } from "../auth/helper";
 
@@ -11,7 +11,7 @@ const Signin = () => {
     error: "",
     loading: false,
     didRedirect: false
-  });
+  });  
 
   const { email, password, error, loading, didRedirect } = values;
   const { user } = isAutheticated();
@@ -117,6 +117,7 @@ const Signin = () => {
       {errorMessage()}
       {signInForm()}
       {performRedirect()}
+
       <p className="text-white text-center">{JSON.stringify(values)}</p>
     </Base>
   );
