@@ -144,12 +144,12 @@ exports.updateProduct = (req, res) => {
 
 exports.getAllProducts = (req, res) => {
   let limit = req.query.limit ? parseInt(req.query.limit) : 8;
-  let sortBy = req.query.sortBy ? req.query.sortBy : "_id";
+  // let sortBy = req.query.sortBy ? req.query.sortBy : "_id"; //getting error fromt this vari 
 
   Product.find()
     .select("-photo")
     .populate("category")
-    .sort([sortBy, "asc"])
+    .sort({ _id: -1})
     .limit(limit)
     .exec((err, products) => {
       if (err) {
