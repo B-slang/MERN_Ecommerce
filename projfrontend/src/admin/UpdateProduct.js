@@ -2,15 +2,15 @@ import React, { useState, useEffect } from "react";
 import Base from "../core/Base";
 import { Link } from "react-router-dom";
 import {
-  createaProduct,
   getCategories,
   getProduct,
-  updateProduct,
+  updateProduct
 } from "./helper/adminapicall";
 import { isAutheticated } from "../auth/helper/index";
 
 const UpdateProduct = ({ match }) => {
   const { user, token } = isAutheticated();
+
   const [values, setValues] = useState({
     name: "",
     description: "",
@@ -23,7 +23,7 @@ const UpdateProduct = ({ match }) => {
     error: "",
     createdProduct: "",
     getaRedirect: false,
-    formData: "",
+    formData: ""
   });
 
   const {
@@ -37,15 +37,16 @@ const UpdateProduct = ({ match }) => {
     error,
     createdProduct,
     getaRedirect,
-    formData,
+    formData
   } = values;
 
-  const preload = (productId) => {
-    getProduct(productId).then((data) => {
-      console.log(data);
+  const preload = productId => {
+    getProduct(productId).then(data => {
+      //console.log(data);
       if (data.error) {
         setValues({ ...values, error: data.error });
       } else {
+        preloadCategories();
         setValues({
           ...values,
           name: data.name,
@@ -53,22 +54,20 @@ const UpdateProduct = ({ match }) => {
           price: data.price,
           category: data.category._id,
           stock: data.stock,
-          formData: new FormData(),
+          formData: new FormData()
         });
-        preloadCategories();
       }
     });
   };
 
   const preloadCategories = () => {
-    getCategories().then((data) => {
+    getCategories().then(data => {
       if (data.error) {
         setValues({ ...values, error: data.error });
       } else {
         setValues({
-          ...values,
           categories: data,
-          formData: new FormData(),
+          formData: new FormData()
         });
       }
     });
@@ -78,12 +77,13 @@ const UpdateProduct = ({ match }) => {
     preload(match.params.productId);
   }, []);
 
-  const onSubmit = (event) => {
-    //
+  //TODO: work on it
+  const onSubmit = event => {
     event.preventDefault();
     setValues({ ...values, error: "", loading: true });
-    updateProduct(user._id, token, formData)
-      .then((data) => {
+
+    updateProduct(match.params.productId, user._id, token, formData).then(
+      data => {
         if (data.error) {
           setValues({ ...values, error: data.error });
         } else {
@@ -95,15 +95,14 @@ const UpdateProduct = ({ match }) => {
             photo: "",
             stock: "",
             loading: false,
-            createdProduct: data.name,
+            createdProduct: data.name
           });
         }
-      })
-      .catch();
+      }
+    );
   };
 
-  const handleChange = (name) => (event) => {
-    //
+  const handleChange = name => event => {
     const value = name === "photo" ? event.target.files[0] : event.target.value;
     formData.set(name, value);
     setValues({ ...values, [name]: value });
@@ -114,15 +113,9 @@ const UpdateProduct = ({ match }) => {
       className="alert alert-success mt-3"
       style={{ display: createdProduct ? "" : "none" }}
     >
-      <h4>{createdProduct} created successfully</h4>
+      <h4>{createdProduct} updated successfully</h4>
     </div>
   );
-
-  const errorMessage = () => {
-    if (error && !createdProduct) {
-      return <h4 className="text-warning">Failed to create product!</h4>;
-    }
-  };
 
   const createProductForm = () => (
     <form>
@@ -172,8 +165,6 @@ const UpdateProduct = ({ match }) => {
           placeholder="Category"
         >
           <option>Select</option>
-          {/* <option value="a">a</option>
-          <option value="b">b</option> */}
           {categories &&
             categories.map((cate, index) => (
               <option key={index} value={cate._id}>
@@ -187,7 +178,7 @@ const UpdateProduct = ({ match }) => {
           onChange={handleChange("stock")}
           type="number"
           className="form-control"
-          placeholder="Quantity"
+          placeholder="Stock"
           value={stock}
         />
       </div>
@@ -197,7 +188,7 @@ const UpdateProduct = ({ match }) => {
         onClick={onSubmit}
         className="btn btn-outline-success mb-3"
       >
-        Create Product
+        Update Product
       </button>
     </form>
   );
@@ -205,7 +196,7 @@ const UpdateProduct = ({ match }) => {
   return (
     <Base
       title="Add a product here!"
-      description="Welcpme to the product creation "
+      description="Welcome to product creation section"
       className="container bg-info p-4"
     >
       <Link to="/admin/dashboard" className="btn btn-md btn-dark mb-3">
@@ -213,9 +204,6 @@ const UpdateProduct = ({ match }) => {
       </Link>
       <div className="row bg-dark text-white rounded">
         <div className="col-md-8 offset-md-2">
-          {/* <h1>hi</h1>
-           */}
-          {errorMessage()}
           {successMessage()}
           {createProductForm()}
         </div>
