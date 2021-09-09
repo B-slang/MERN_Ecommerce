@@ -5,7 +5,6 @@ import { isAutheticated } from "../auth/helper";
 import { getCategories } from "./helper/adminapicall";
 
 
-
 const ManageCategories = () => {
 
 
@@ -39,7 +38,13 @@ const ManageCategories = () => {
       <div className="row">
         <div className="col-12">
           <h2 className="text-center text-white my-3">Total 3 products</h2>
-
+          {category.map((category, index) => {
+            return (
+              <h3 className="text-white" key={index}>
+                {category.name}
+              </h3>
+            );
+          })}
           <div className="row text-center mb-2 ">
             <div className="col-4">
               <h3 className="text-white text-left">I write code</h3>
