@@ -3,9 +3,8 @@ import { cartEmpty, loadCart } from "./helper/cartHelper";
 import { Link } from "react-router-dom";
 import { getmeToken, processPayment } from "./helper/paymentbhelper";
 import { createOrder } from "./helper/OderHelper";
-// import isAutheticated from "../auth/helper"
 import { isAutheticated } from "../auth/helper";
-import DropIn from "braintree-web-react"
+import DropIn from "braintree-web-drop-in-react"
 
 
 
@@ -18,7 +17,7 @@ const Paymentb = ({ products, setReload = f => f, reload = undefined }) => {
         error: ""
 })
 
-    const userId = isAutheticated() && isAutheticated().user_id
+    const userId = isAutheticated() && isAutheticated().user._id
     const token = isAutheticated() && isAutheticated().token
 
     

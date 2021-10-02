@@ -8,22 +8,25 @@ export const getmeToken = (userId, token) => {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-  }).then(response => {
-      return response.json()
   })
-      .catch(err=> console.log(err));
+    .then((response) => {
+      return response.json();
+    })
+    .catch((err) => console.log(err));
 };
 
 export const processPayment = (userId, token, paymentInfo) => {
-    return fetch(`${API}/payment/braintree/${userId}`, {
-        method: "POST",
-        headers: {
-          Accept: "appication/json",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(paymentInfo)
-    }).then(response => {
-        return response.json()
-    }).catch(err => console.log(err))
-}
+  return fetch(`${API}/payment/braintree/${userId}`, {
+    method: "POST",
+    headers: {
+      Accept: "appication/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(paymentInfo),
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};
